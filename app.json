@@ -1,10 +1,37 @@
 {
   "expo": {
-    "scheme": "acme",
-    "plugins": [
-      "expo-router"
-    ],
     "name": "OpenSplit",
-    "slug": "OpenSplit"
+    "slug": "OpenSplit",
+    "scheme": "opensplit",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.ramimaalouf.opensplit",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.ramimaalouf.opensplit",
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-video",
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "OpenSplit needs access to your videos so you can pick one to split."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "savePhotosPermission": "OpenSplit saves the split chunks back to your photo library.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ]
+    ]
   }
 }

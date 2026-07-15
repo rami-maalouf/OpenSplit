@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["VideoSplitterModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.videosplitter.VideoSplitterModule"]
+  }
+}

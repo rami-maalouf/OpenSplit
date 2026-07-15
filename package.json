@@ -10,12 +10,21 @@
     "deploy": "npx expo export -p web && npx eas-cli@latest deploy"
   },
   "dependencies": {
+    "@expo/ui": "~57.0.4",
     "expo": "^57.0.1",
+    "expo-file-system": "~57.0.0",
+    "expo-image-picker": "~57.0.2",
+    "expo-media-library": "~57.0.1",
     "expo-router": "~57.0.2",
+    "expo-sharing": "~57.0.3",
+    "expo-video": "~57.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.0",
     "react-native-web": "^0.21.0"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "typescript": "~6.0.3"
+  }
 }

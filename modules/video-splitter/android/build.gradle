@@ -1,0 +1,24 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.videosplitter'
+version = '0.1.0'
+
+android {
+  namespace "expo.modules.videosplitter"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation "androidx.media3:media3-common:1.7.1"
+  implementation "androidx.media3:media3-effect:1.7.1"
+  implementation "androidx.media3:media3-transformer:1.7.1"
+}
