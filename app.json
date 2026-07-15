@@ -38,7 +38,8 @@
           "savePhotosPermission": "OpenSplit saves the split chunks back to your photo library.",
           "isAccessMediaLocationEnabled": false
         }
-      ]
+      ],
+      "expo-status-bar"
     ]
   }
 }
