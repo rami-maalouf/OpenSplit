@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- background: cheerful sky blue plastic -->
+    <radialGradient id="bg" cx="50%" cy="32%" r="90%">
+      <stop offset="0%" stop-color="#6FBBFF"/>
+      <stop offset="55%" stop-color="#3D93F5"/>
+      <stop offset="100%" stop-color="#1D63D8"/>
+    </radialGradient>
+    <!-- glossy orange plastic for the play halves -->
+    <linearGradient id="tri" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFB13D"/>
+      <stop offset="45%" stop-color="#FF8F1F"/>
+      <stop offset="100%" stop-color="#F06A00"/>
+    </linearGradient>
+    <linearGradient id="triEdge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD08A"/>
+      <stop offset="100%" stop-color="#E85F00"/>
+    </linearGradient>
+    <!-- top gloss sweep -->
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="26" stdDeviation="28" flood-color="#0B3A8A" flood-opacity="0.45"/>
+    </filter>
+    <!-- the play triangle, drawn once and reused -->
+    <path id="triPath" d="M 336 268 L 726 486 Q 762 512 726 538 L 336 756 Q 296 776 296 728 L 296 296 Q 296 248 336 268 Z"/>
+    <clipPath id="triClip"><use href="#triPath"/></clipPath>
+    <!-- tilted cut through the triangle -->
+    <clipPath id="leftHalf"><polygon points="-200,-200 462,-200 562,1224 -200,1224"/></clipPath>
+    <clipPath id="rightHalf"><polygon points="462,-200 1224,-200 1224,1224 562,1224"/></clipPath>
+  </defs>
+
+  <!-- background -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <circle cx="160" cy="170" r="120" fill="#FFFFFF" opacity="0.08"/>
+  <circle cx="880" cy="820" r="170" fill="#0B3A8A" opacity="0.10"/>
+  <circle cx="890" cy="150" r="70" fill="#FFFFFF" opacity="0.10"/>
+
+  <!-- LEFT half of the play button, nudged left -->
+  <g transform="translate(-42,0)" filter="url(#shadow)">
+    <g clip-path="url(#leftHalf)">
+      <use href="#triPath" fill="url(#tri)" stroke="url(#triEdge)" stroke-width="34" stroke-linejoin="round"/>
+      <g clip-path="url(#triClip)">
+        <path d="M 310 282 Q 520 316 660 452 Q 500 380 316 330 Z" fill="url(#gloss)"/>
+        <!-- light plastic cross-section along the cut -->
+        <line x1="462" y1="-200" x2="562" y2="1224" stroke="#FFDDAA" stroke-width="26"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT half of the play button, nudged right -->
+  <g transform="translate(42,0)" filter="url(#shadow)">
+    <g clip-path="url(#rightHalf)">
+      <use href="#triPath" fill="url(#tri)" stroke="url(#triEdge)" stroke-width="34" stroke-linejoin="round"/>
+      <g clip-path="url(#triClip)">
+        <path d="M 310 282 Q 520 316 660 452 Q 500 380 316 330 Z" fill="url(#gloss)"/>
+        <line x1="462" y1="-200" x2="562" y2="1224" stroke="#FFDDAA" stroke-width="26"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- toy sparkles -->
+  <g fill="#FFFFFF" opacity="0.95">
+    <path d="M 790 240 l 12 34 34 12 -34 12 -12 34 -12 -34 -34 -12 34 -12 Z"/>
+    <path d="M 250 806 l 8 22 22 8 -22 8 -8 22 -8 -22 -22 -8 22 -8 Z" opacity="0.8"/>
+  </g>
+</svg>
