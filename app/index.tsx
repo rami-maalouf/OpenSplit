@@ -1,7 +1,7 @@
 import { Button, Column, Host, Picker, Row, Spacer, Text } from '@expo/ui';
 import { Directory, Paths } from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
+import { Asset as MediaAsset, requestPermissionsAsync } from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import { useEffect, useMemo, useState } from 'react';
@@ -11,10 +11,10 @@ import { formatBytes, formatDuration, planEqualChunks } from '@/lib/split-plan';
 import VideoSplitter, { type SplitProgressEvent, type VideoInfo } from '@/modules/video-splitter';
 
 const CHUNK_CHOICES = [
-  { label: '15 seconds', value: '15' },
-  { label: '30 seconds', value: '30' },
-  { label: '60 seconds (stories)', value: '60' },
-  { label: '90 seconds', value: '90' },
+  { label: '15s', value: '15' },
+  { label: '30s', value: '30' },
+  { label: '60s · stories', value: '60' },
+  { label: '90s', value: '90' },
 ];
 
 const MUTED = { fontSize: 14, color: '#8a8a8e' };
@@ -106,14 +106,14 @@ export default function HomeScreen() {
 
   const saveAll = async () => {
     setError(null);
-    const permission = await MediaLibrary.requestPermissionsAsync(true);
+    const permission = await requestPermissionsAsync(true);
     if (!permission.granted) {
       setError('photo library permission is required to save chunks');
       return;
     }
     try {
       for (const uri of chunks) {
-        await MediaLibrary.saveToLibraryAsync(uri);
+        await MediaAsset.create(uri);
       }
       setSavedAll(true);
     } catch (e) {
@@ -140,7 +140,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <Host matchContents>
+      <Host matchContents={{ vertical: true }} style={styles.host}>
         <Column spacing={16}>
           <Text textStyle={{ fontSize: 17 }}>
             Pick a video of any length and split it into equal chunks that fit anywhere.
@@ -159,7 +159,7 @@ export default function HomeScreen() {
             <VideoView player={player} style={styles.player} contentFit="contain" nativeControls />
           </View>
 
-          <Host matchContents>
+          <Host matchContents={{ vertical: true }} style={styles.host}>
             <Column spacing={12}>
               <Text textStyle={MUTED}>{infoLine}</Text>
               <Row spacing={12} alignment="center">
@@ -172,26 +172,28 @@ export default function HomeScreen() {
                 </Picker>
               </Row>
               <Text textStyle={MUTED}>{planLine}</Text>
-              <Button
-                variant="filled"
-                label={status === 'splitting' ? 'Splitting…' : 'Split video'}
-                disabled={status === 'splitting' || plan.length < 2}
-                onPress={split}
-              />
             </Column>
           </Host>
+
+          {/* action button in its own host: content overflow in a sibling host can
+              never push it outside tappable bounds */}
+          {status !== 'splitting' && plan.length >= 2 && (
+            <Host matchContents={{ vertical: true }} style={styles.host}>
+              <Button variant="filled" label="Split video" onPress={split} />
+            </Host>
+          )}
 
           {status === 'splitting' && (
             <View style={styles.progressRow}>
               <ActivityIndicator />
-              <Host matchContents>
+              <Host matchContents={{ vertical: true }} style={styles.host}>
                 <Text textStyle={MUTED}>{progressLine}</Text>
               </Host>
             </View>
           )}
 
           {status === 'done' && chunks.length > 0 && (
-            <Host matchContents>
+            <Host matchContents={{ vertical: true }} style={styles.host}>
               <Column spacing={12}>
                 <Text textStyle={{ fontSize: 20, fontWeight: '600' }}>Chunks</Text>
                 {chunks.map((uri, index) => (
@@ -202,20 +204,25 @@ export default function HomeScreen() {
                     <Button variant="outlined" label="Share" onPress={() => share(uri)} />
                   </Row>
                 ))}
-                <Button
-                  variant="filled"
-                  label={savedAll ? 'Saved to Photos' : 'Save all to Photos'}
-                  disabled={savedAll}
-                  onPress={saveAll}
-                />
               </Column>
+            </Host>
+          )}
+
+          {status === 'done' && chunks.length > 0 && (
+            <Host matchContents={{ vertical: true }} style={styles.host}>
+              <Button
+                variant="filled"
+                label={savedAll ? 'Saved to Photos' : 'Save all to Photos'}
+                disabled={savedAll}
+                onPress={saveAll}
+              />
             </Host>
           )}
         </>
       )}
 
       {error && (
-        <Host matchContents>
+        <Host matchContents={{ vertical: true }} style={styles.host}>
           <Text textStyle={{ color: ERROR_RED }}>{error}</Text>
         </Host>
       )}
@@ -226,6 +233,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  host: {
+    width: '100%',
   },
   content: {
     padding: 16,
